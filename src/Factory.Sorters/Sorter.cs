@@ -7,22 +7,22 @@ namespace Factory.Sorters
     public class Sorter<T>
     {
         private readonly T[] items;
-        private int index;
+        private int count;
 
         public Sorter(int capacity)
         {
             this.items = new T[capacity];
-            this.index = 0;
+            this.count = 0;
         }
         
         public bool AddItem(T item)
         {
-            if(this.index >= this.items.Length)
+            if(this.count >= this.items.Length)
             {
                 return false;
             }
             
-            this.items[this.index++] = item;
+            this.items[this.count++] = item;
             return true;
         }
 
