@@ -2,9 +2,9 @@ namespace Factory.Resources
 {
     public abstract class Ore
     {
-        public float Weight { get; }
+        public double Weight { get; }
 
-        internal Ore(float weight)
+        internal Ore(double weight)
         {
             this.Weight = weight;
         }
@@ -12,78 +12,78 @@ namespace Factory.Resources
 
     public class Hematite : Ore, IIron
     {
-        public Hematite(float weight, float concentration) : base(weight)
+        public Hematite(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Magnetite : Ore, IIron
     {
-        public Magnetite(float weight, float concentration) : base(weight)
+        public Magnetite(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Chalcopyrite : Ore, ICopper
     {
-        public Chalcopyrite(float weight, float concentration) : base(weight)
+        public Chalcopyrite(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Chalcocite : Ore, ICopper
     {
-        public Chalcocite(float weight, float concentration) : base(weight)
+        public Chalcocite(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Bauxite : Ore, IAluminium
     {
-        public Bauxite(float weight, float concentration) : base(weight)
+        public Bauxite(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Corundum : Ore, IAluminium
     {
-        public Corundum(float weight, float concentration) : base(weight)
+        public Corundum(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Zincite : Ore, IZinc
     {
-        public Zincite(float weight, float concentration) : base(weight)
+        public Zincite(double weight, double concentration) : base(weight)
         {
             this.Concentration = concentration;
         }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 
     public class Calamine : Ore, IZinc
     {
-        public Calamine(float weight) : base(weight) { }
+        public Calamine(double weight) : base(weight) { }
 
-        public float Concentration { get; }
+        public double Concentration { get; }
     }
 }

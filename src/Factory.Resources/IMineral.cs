@@ -2,12 +2,8 @@ namespace Factory.Resources
 {
     public interface IMineral
     {
-        float Concentration { get; }
+        double Concentration { get; }
     }
-    
-    public interface ITraceMineral<T>
-        where T : IMineral
-    { }
 
     public interface IIron : IMineral { }
 

@@ -1,10 +1,11 @@
 namespace Factory.Resources
 {
-    public struct IronIngot { }
-    
-    public struct CopperIngot { }
-    
-    public struct AluminiumIngot { }
-    
-    public struct ZincIngot { }
+    public interface IIngot { }
+    public struct IronIngot : IIngot { }
+
+    public struct CopperIngot : IIngot { }
+
+    public struct AluminiumIngot : IIngot { }
+
+    public struct ZincIngot : IIngot { }
 }

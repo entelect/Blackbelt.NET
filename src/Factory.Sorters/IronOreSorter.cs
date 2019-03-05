@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Factory.Resources;
@@ -26,11 +27,11 @@ namespace Factory.Sorters
             return true;
         }
 
-        public float AverageConcentration
+        public double AverageConcentration
         {
             get
             {
-                var total = 0f;
+                var total = 0.0;
                 
                 for(int i = 0; i < this.count; i++)
                 {
