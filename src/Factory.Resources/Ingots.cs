@@ -1,4 +1,5 @@
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Factory.Resources
 {
@@ -25,6 +26,12 @@ namespace Factory.Resources
         public void Cool()
         {
             Thread.Sleep(20);
+            this.isCooled = true;
+        }
+
+        public async Task CoolAsync()
+        {
+            await Task.Delay(20);
             this.isCooled = true;
         }
     }

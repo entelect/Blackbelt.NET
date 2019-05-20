@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Factory.Resources;
 
 namespace Factory.Alloying
@@ -41,6 +42,13 @@ namespace Factory.Alloying
             }
             
             return alloys.ToArray();
+        }
+
+        public async Task<TAlloy[]> ForgeAsync(TBase[] bases, TSolute[] solutes)
+        {
+            await Task.Delay(1000);
+
+            throw new NotImplementedException();
         }
     }
 }
