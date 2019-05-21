@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Factory.Resources;
 
@@ -13,44 +14,34 @@ namespace Factory.Smelter
         {
             this.ingotWeight = ingotWeight;
         }
-        
-        public CopperIngot[] HeatForgeAndSmelt(IEnumerable<Chalcopyrite> oreItem)
+
+        public Ingot<ICopper>[] HeatForgeAndSmelt(IEnumerable<Chalcopyrite> oreItem)
         {
             //Heat forge
             Thread.Sleep(1000);
 
-            var smelt = this.Smelt(oreItem);
-            
+            var smelt = Smelt(oreItem);
+
             //Cool ingots
-            foreach(var ingot in smelt)
-            {
-                ingot.Cool();
-            }
-            
-            return smelt.ToArray();
+            foreach (var ingot in smelt) ingot.Cool();
+
+            return smelt;
         }
 
-        private List<CopperIngot> Smelt(IEnumerable<Chalcopyrite> oreItems)
+        private Ingot<ICopper>[] Smelt(IEnumerable<Chalcopyrite> oreItems)
         {
-            var ingots = new List<CopperIngot>();
-            var ingot = new CopperIngot();
+            var moltenCopper = oreItems.Sum(x => x.Weight * x.Concentration);
 
-            foreach(var oreItem in oreItems)
+            var ingotCount = (int)Math.Ceiling(moltenCopper / ingotWeight);
+
+            var ingots = new Ingot<ICopper>[ingotCount];
+            var lastIndex = ingotCount - 1;
+            for (var i = 0; i < lastIndex; i++)
             {
-                var moltenIron = oreItem.Weight * oreItem.Concentration;
-                var weightLeft = this.ingotWeight - ingot.Weight;
-                var toAddToIngot = Math.Min(moltenIron, weightLeft);
-                ingot.AddWeight(toAddToIngot);
-
-                if(!(Math.Abs(this.ingotWeight - ingot.Weight) < 0.01))
-                {
-                    continue;
-                }
-                
-                ingots.Add(ingot);
-                ingot = new CopperIngot();
-                ingot.AddWeight(moltenIron - toAddToIngot);
+                ingots[i] = new Ingot<ICopper>(this.ingotWeight);
             }
+
+            ingots[lastIndex] = new Ingot<ICopper>(moltenCopper % ingotCount);
 
             return ingots;
         }

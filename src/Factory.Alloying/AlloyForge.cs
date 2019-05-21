@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Factory.Resources;
@@ -7,34 +8,24 @@ using Factory.Resources;
 namespace Factory.Alloying
 {
     public class AlloyForge<TAlloy, TBase, TSolute>
-        where TBase : Ingot, new()
-        where TSolute : Ingot, new()
-        where TAlloy : Ingot, IAlloy<TBase, TSolute>, new ()
+        where TBase : IMetal
+        where TSolute : IMetal
+        where TAlloy : IAlloy<TBase, TSolute>
     {
-        private readonly double ratio;
+        private readonly double ingotWeight;
 
-        public AlloyForge(double ratio)
+        public AlloyForge(double ingotWeight)
         {
-            this.ratio = ratio;
+            this.ingotWeight = ingotWeight;
         }
 
-        public TAlloy[] Forge(TBase[] bases, TSolute[] solutes)
+        public Ingot<TAlloy>[] Forge(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
         {
             //Heat alloyer
             Thread.Sleep(1000);
 
-            var alloys = new List<TAlloy>();
+            var alloys = ForgeAlloys(bases, solutes);
 
-            foreach(var @base in bases)
-            {
-                var moltenBase = @base.Weight;
-                foreach(var solute in solutes)
-                {
-                    var moltenSolute = solute.Weight;
-                    //TODO figure out the math required for this
-                }
-            }
-            
             //Cool ingots
             foreach(var alloy in alloys)
             {
@@ -44,11 +35,37 @@ namespace Factory.Alloying
             return alloys.ToArray();
         }
 
-        public async Task<TAlloy[]> ForgeAsync(TBase[] bases, TSolute[] solutes)
+        public async Task<Ingot<TAlloy>[]> ForgeAsync(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
         {
             await Task.Delay(1000);
 
-            throw new NotImplementedException();
+            var alloys = ForgeAlloys(bases, solutes);
+
+            var coolTasks = alloys.Select(async x => await x.CoolAsync());
+
+            await Task.WhenAll(coolTasks);
+
+            return alloys;
+        }
+
+        private Ingot<TAlloy>[] ForgeAlloys(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
+        {
+            var basesTotalWeight = bases.Sum(x => x.Weight);
+            var solutesTotalWeight = solutes.Sum(x => x.Weight);
+            var totalWeight = basesTotalWeight + solutesTotalWeight;
+            var ingotCount = (int) Math.Ceiling(totalWeight / ingotWeight);
+            var lastIndex = ingotCount - 1;
+
+            var alloys = new Ingot<TAlloy>[ingotCount];
+
+            for (int i = 0; i < lastIndex; i++)
+            {
+                alloys[i] = new Ingot<TAlloy>(this.ingotWeight);
+            }
+
+            alloys[lastIndex] = new Ingot<TAlloy>(totalWeight % lastIndex);
+            
+            return alloys;
         }
     }
 }

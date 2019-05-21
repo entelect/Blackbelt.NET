@@ -1,59 +1,39 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Factory.Resources
 {
-    public abstract class Ingot
+    public class Ingot<TMetal>
+        where TMetal: IMetal
     {
-        private double weight;
+        private readonly int coolTimePerWeight;
+        private readonly double weight;
         private bool isCooled;
 
-        protected Ingot()
+        public Ingot(double weight)
         {
-            this.weight = 0;
+            this.weight = weight;
             this.isCooled = false;
+            this.coolTimePerWeight = 2;
         }
 
-        public double Weight => Weight;
+        public double Weight => weight;
+
+        private int CoolTime => (int)Math.Ceiling(coolTimePerWeight * weight);
 
         public bool IsCooled => this.isCooled;
 
-        public void AddWeight(double weight)
-        {
-            this.weight += weight;
-        }
-
         public void Cool()
         {
-            Thread.Sleep(20);
+            Thread.Sleep(this.CoolTime);
             this.isCooled = true;
         }
 
         public async Task CoolAsync()
         {
-            await Task.Delay(20);
+            await Task.Delay(this.CoolTime);
             this.isCooled = true;
         }
     }
-
-    public interface IIngot<TMineral>
-        where TMineral : IMineral { }
-
-    public interface IAlloy<TBase, TSolute>
-        where TBase : Ingot
-        where TSolute : Ingot { }
-
-    public class IronIngot : Ingot, IIngot<IIron>
-    {
-    }
-
-    public class CopperIngot : Ingot, IIngot<ICopper> { }
-
-    public class AluminiumIngot : Ingot, IIngot<IAluminium> { }
-
-    public class ZincIngot : Ingot, IIngot<IZinc> { }
-
-    public class BronzeIngot : Ingot, IAlloy<CopperIngot, ZincIngot> { }
-    
-    public class LightBronzeIngot : Ingot, IAlloy<BronzeIngot, AluminiumIngot> { }
 }
