@@ -10,7 +10,7 @@ namespace Factory.Resources
         internal Ore(double weight, double concentration)
         {
             this.Weight = weight;
-            this.Concentration = Concentration;
+            this.Concentration = concentration;
         }
     }
 
