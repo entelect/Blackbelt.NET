@@ -23,7 +23,10 @@ namespace Factory.Smelter
             var smelt = Smelt(oreItem);
 
             //Cool ingots
-            foreach (var ingot in smelt) ingot.Cool();
+            foreach (var ingot in smelt)
+            {
+                ingot.Cool();
+            }
 
             return smelt;
         }

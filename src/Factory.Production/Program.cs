@@ -27,25 +27,25 @@ namespace Factory.Production
 
             var stopWatch = Stopwatch.StartNew();
 
-            LogForgeStarting<ICopper>(stopWatch);
+            stopWatch.LogForgeStarting<ICopper>();
             var copperIngots = FakeForge.ForgeIngots<ICopper>(30, 20);
-            LogForgeFinished<ICopper>(stopWatch);
+            stopWatch.LogForgeFinished<ICopper>();
 
-            LogForgeStarting<IZinc>(stopWatch);
+            stopWatch.LogForgeStarting<IZinc>();
             var zincIngots = FakeForge.ForgeIngots<IZinc>(10, 5);
-            LogForgeFinished<IZinc>(stopWatch);
+            stopWatch.LogForgeFinished<IZinc>();
 
-            LogForgeStarting<IBronze>(stopWatch);
+            stopWatch.LogForgeStarting<IBronze>();
             var bronzeIngots = bronzeAlloyer.Forge(copperIngots, zincIngots);
-            LogForgeFinished<IBronze>(stopWatch);
+            stopWatch.LogForgeFinished<IBronze>();
 
-            LogForgeStarting<IAluminium>(stopWatch);
+            stopWatch.LogForgeStarting<IAluminium>();
             var aluminiumIngots = FakeForge.ForgeIngots<IAluminium>(15, 3);
-            LogForgeFinished<IAluminium>(stopWatch);
+            stopWatch.LogForgeFinished<IAluminium>();
 
-            LogForgeStarting<ILightBronze>(stopWatch);
+            stopWatch.LogForgeStarting<ILightBronze>();
             var lightBronzeIngots = lightBronzeAlloyer.Forge(bronzeIngots, aluminiumIngots);
-            LogForgeFinished<ILightBronze>(stopWatch);
+            stopWatch.LogForgeFinished<ILightBronze>();
 
             stopWatch.Stop();
 
@@ -59,18 +59,18 @@ namespace Factory.Production
             var lightBronzeAlloyer = new AlloyForge<ILightBronze, IBronze, IAluminium>(15);
 
             var stopWatch = Stopwatch.StartNew();
-
-            var copperTask = Task.Run(() => LogForgeStarting<ICopper>(stopWatch))
+            
+            var copperTask = Task.Run(() => stopWatch.LogForgeStarting<ICopper>())
                 .ContinueWith(t => FakeForge.ForgeIngotsAsync<ICopper>(30, 20))
                 .Unwrap()
                 .ContinueWith(t =>
                 {
-                    LogForgeFinished<ICopper>(stopWatch);
+                    stopWatch.LogForgeFinished<ICopper>();
                     return t;
                 })
                 .Unwrap();
             
-            var zincTask = Task.Run(() => LogForgeStarting<IZinc>(stopWatch))
+            var zincTask = Task.Run(() => stopWatch.LogForgeStarting<IZinc>())
                 .ContinueWith(t => FakeForge.ForgeIngotsAsync<IZinc>(10, 5))
                 .Unwrap()
                 .ContinueWith(t =>
@@ -81,22 +81,22 @@ namespace Factory.Production
                 .Unwrap();
 
             var bronzeTask = Task.WhenAll(copperTask, zincTask)
-                .ContinueWith(t => LogForgeStarting<IBronze>(stopWatch))
+                .ContinueWith(t => stopWatch.LogForgeStarting<IBronze>())
                 .ContinueWith(t => bronzeAlloyer.ForgeAsync(copperTask.Result, zincTask.Result))
                 .Unwrap()
                 .ContinueWith(t =>
                 {
-                    LogForgeFinished<IBronze>(stopWatch);
+                    stopWatch.LogForgeFinished<IBronze>();
                     return t;
                 })
                 .Unwrap();
 
-            var aluminiumTask = Task.Run(() => LogForgeStarting<IAluminium>(stopWatch))
+            var aluminiumTask = Task.Run(() => stopWatch.LogForgeStarting<IAluminium>())
                 .ContinueWith(t => FakeForge.ForgeIngotsAsync<IAluminium>(15, 3))
                 .Unwrap()
                 .ContinueWith(t =>
                 {
-                    LogForgeFinished<IAluminium>(stopWatch);
+                    stopWatch.LogForgeFinished<IAluminium>();
                     return t;
                 })
                 .Unwrap();
@@ -109,7 +109,7 @@ namespace Factory.Production
                 })
                 .ContinueWith(t =>
                 {
-                    LogForgeStarting<ILightBronze>(stopWatch);
+                    stopWatch.LogForgeStarting<ILightBronze>();
                     return t;
                 })
                 .Unwrap()
@@ -123,7 +123,7 @@ namespace Factory.Production
                 .Unwrap()
                 .ContinueWith(t =>
                 {
-                    LogForgeFinished<ILightBronze>(stopWatch);
+                    stopWatch.LogForgeFinished<ILightBronze>();
                     return t;
                 })
                 .Unwrap();
@@ -143,13 +143,13 @@ namespace Factory.Production
             throw new NotImplementedException();
         }
 
-        private static void LogForgeStarting<TIngot>(Stopwatch stopwatch)
+        private static void LogForgeStarting<TIngot>(this Stopwatch stopwatch)
             where TIngot : IMetal
         {
             Console.WriteLine($"Starting {typeof(TIngot).Name} forging at: {stopwatch.ElapsedMilliseconds}");
         }
 
-        private static void LogForgeFinished<TIngot>(Stopwatch stopwatch)
+        private static void LogForgeFinished<TIngot>(this Stopwatch stopwatch)
             where TIngot : IMetal
         {
             Console.WriteLine($"{typeof(TIngot).Name} forging finished at: {stopwatch.ElapsedMilliseconds}");

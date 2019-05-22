@@ -13,6 +13,7 @@ namespace Factory.Alloying
         where TAlloy : IAlloy<TBase, TSolute>
     {
         private readonly double ingotWeight;
+        private const int HeatingTime = 1000;
 
         public AlloyForge(double ingotWeight)
         {
@@ -21,8 +22,8 @@ namespace Factory.Alloying
 
         public Ingot<TAlloy>[] Forge(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
         {
-            //Heat alloyer
-            Thread.Sleep(1000);
+            //Heat all oyen
+            Thread.Sleep(HeatingTime);
 
             var alloys = ForgeAlloys(bases, solutes);
 
@@ -37,7 +38,7 @@ namespace Factory.Alloying
 
         public async Task<Ingot<TAlloy>[]> ForgeAsync(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
         {
-            await Task.Delay(1000);
+            await Task.Delay(HeatingTime);
 
             var alloys = ForgeAlloys(bases, solutes);
 
