@@ -9,16 +9,18 @@ namespace Factory.Smelter
     public class ChalcopyriteForge
     {
         private readonly double ingotWeight;
+        private readonly int heatingTime;
 
         public ChalcopyriteForge(double ingotWeight)
         {
             this.ingotWeight = ingotWeight;
+            this.heatingTime = ForgeHeatingTime.Get<Copper>();
         }
 
-        public Ingot<ICopper>[] HeatForgeAndSmelt(IEnumerable<Chalcopyrite> oreItem)
+        public Ingot<Copper>[] HeatForgeAndSmelt(IEnumerable<Chalcopyrite> oreItem)
         {
             //Heat forge
-            Thread.Sleep(1000);
+            Thread.Sleep(this.heatingTime);
 
             var smelt = Smelt(oreItem);
 
@@ -31,20 +33,20 @@ namespace Factory.Smelter
             return smelt;
         }
 
-        private Ingot<ICopper>[] Smelt(IEnumerable<Chalcopyrite> oreItems)
+        private Ingot<Copper>[] Smelt(IEnumerable<Chalcopyrite> oreItems)
         {
             var moltenCopper = oreItems.Sum(x => x.Weight * x.Concentration);
 
             var ingotCount = (int)Math.Ceiling(moltenCopper / ingotWeight);
 
-            var ingots = new Ingot<ICopper>[ingotCount];
+            var ingots = new Ingot<Copper>[ingotCount];
             var lastIndex = ingotCount - 1;
             for (var i = 0; i < lastIndex; i++)
             {
-                ingots[i] = new Ingot<ICopper>(this.ingotWeight);
+                ingots[i] = new Ingot<Copper>(this.ingotWeight);
             }
 
-            ingots[lastIndex] = new Ingot<ICopper>(moltenCopper % ingotCount);
+            ingots[lastIndex] = new Ingot<Copper>(moltenCopper % ingotCount);
 
             return ingots;
         }

@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Factory.Alloying\Factory.Alloying.csproj" />
       <ProjectReference Include="..\Factory.Resources\Factory.Resources.csproj" />
+      <ProjectReference Include="..\Factory.Samplers\Factory.Samplers.csproj" />
     </ItemGroup>
 
 </Project>

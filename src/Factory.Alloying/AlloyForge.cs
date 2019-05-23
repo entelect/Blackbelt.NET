@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,17 +12,18 @@ namespace Factory.Alloying
         where TAlloy : IAlloy<TBase, TSolute>
     {
         private readonly double ingotWeight;
-        private const int HeatingTime = 1000;
+        private readonly int heatingTime;
 
         public AlloyForge(double ingotWeight)
         {
             this.ingotWeight = ingotWeight;
+            this.heatingTime = ForgeHeatingTime.Get<TAlloy>();
         }
 
         public Ingot<TAlloy>[] Forge(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
         {
             //Heat all oyen
-            Thread.Sleep(HeatingTime);
+            Thread.Sleep(this.heatingTime);
 
             var alloys = ForgeAlloys(bases, solutes);
 
@@ -38,7 +38,7 @@ namespace Factory.Alloying
 
         public async Task<Ingot<TAlloy>[]> ForgeAsync(Ingot<TBase>[] bases, Ingot<TSolute>[] solutes)
         {
-            await Task.Delay(HeatingTime);
+            await Task.Delay(this.heatingTime);
 
             var alloys = ForgeAlloys(bases, solutes);
 

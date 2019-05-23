@@ -8,21 +8,22 @@ namespace Factory.Samplers
     public class Sampler
     {
         private readonly double samplePercentage;
+        private readonly Random random;
 
-        public Sampler(double samplePercentage)
+        public Sampler(double samplePercentage, int seed)
         {
             Debug.Assert(samplePercentage > 0.0 && samplePercentage <= 1.0,
                 $"{nameof(samplePercentage)} not between 0 and 1");
             this.samplePercentage = samplePercentage;
+            this.random = new Random(seed);
         }
 
-        private IEnumerable<Ore<IPureMetal>> GetSample(IReadOnlyCollection<Ore<IPureMetal>> batch)
+        private IEnumerable<Ore<TMetal>> GetSample<TMetal>(IReadOnlyCollection<Ore<TMetal>> batch)
+            where TMetal : IPureMetal
         {
             var totalToTake = (int)(samplePercentage * batch.Count);
             var totalTaken = 0;
             
-            var random = new Random();
-
             foreach (var item in batch)
             {
                 if (totalTaken == totalToTake)
@@ -30,7 +31,7 @@ namespace Factory.Samplers
                     yield break;
                 }
                 
-                var roll = random.NextDouble();
+                var roll = this.random.NextDouble();
 
                 if (!(roll <= this.samplePercentage))
                 {
@@ -43,10 +44,11 @@ namespace Factory.Samplers
         }
 
         //TODO: Add expression to serve as check to this method
-        public bool RunCheckOnSample(IReadOnlyCollection<Ore<IPureMetal>> batch)
+        public bool RunCheckOnSample<TMetal>(IReadOnlyList<Ore<TMetal>> batch)
+            where TMetal : IPureMetal
         {
             var sample = GetSample(batch);
-            
+
             throw new NotImplementedException("Checking mechanism has not been implemented yet.");
         }
     }

@@ -14,43 +14,43 @@ namespace Factory.Resources
         }
     }
 
-    public class Hematite : Ore<IIron>
+    public class Hematite : Ore<Iron>
     {
-        public Hematite(double weight, double concentration) : base(weight, concentration) { }
+        internal Hematite(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Magnetite : Ore<IIron>
+    public class Magnetite : Ore<Iron>
     {
-        public Magnetite(double weight, double concentration) : base(weight, concentration) { }
+        internal Magnetite(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Chalcopyrite : Ore<ICopper>
+    public class Chalcopyrite : Ore<Copper>
     {
-        public Chalcopyrite(double weight, double concentration) : base(weight, concentration) { }
+        internal Chalcopyrite(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Chalcocite : Ore<ICopper>
+    public class Chalcocite : Ore<Copper>
     {
-        public Chalcocite(double weight, double concentration) : base(weight, concentration) { }
+        internal Chalcocite(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Bauxite : Ore<IAluminium>
+    public class Bauxite : Ore<Aluminium>
     {
-        public Bauxite(double weight, double concentration) : base(weight, concentration) { }
+        internal Bauxite(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Corundum : Ore<IAluminium>
+    public class Corundum : Ore<Aluminium>
     {
-        public Corundum(double weight, double concentration) : base(weight, concentration) { }
+        internal Corundum(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Zincite : Ore<IZinc>
+    public class Zincite : Ore<Zinc>
     {
-        public Zincite(double weight, double concentration) : base(weight, concentration) { }
+        internal Zincite(double weight, double concentration) : base(weight, concentration) { }
     }
 
-    public class Calamine : Ore<IZinc>
+    public class Calamine : Ore<Zinc>
     {
-        public Calamine(double weight, double concentration) : base(weight, concentration) { }
+        internal Calamine(double weight, double concentration) : base(weight, concentration) { }
     }
 }
