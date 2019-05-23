@@ -6,7 +6,7 @@ using Factory.Resources;
 
 namespace Factory.Production
 {
-    public class ProductionLine
+    public class LightBronzeProductionLine
     {
         private const double CopperIngotWeight = 30;
         private const int CopperIngotCount = 20;
@@ -20,7 +20,7 @@ namespace Factory.Production
         private readonly AlloyForge<IBronze, ICopper, IZinc> bronzeAlloyer;
         private readonly AlloyForge<ILightBronze, IBronze, IAluminium> lightBronzeAlloyer;
 
-        public ProductionLine()
+        public LightBronzeProductionLine()
         {
             this.bronzeAlloyer = new AlloyForge<IBronze, ICopper, IZinc>(20);
             this.lightBronzeAlloyer = new AlloyForge<ILightBronze, IBronze, IAluminium>(15);

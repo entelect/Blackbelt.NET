@@ -9,7 +9,7 @@ namespace Factory.Production
     {
         static async Task Main(string[] args)
         {
-            var productionLine = new ProductionLine();
+            var productionLine = new LightBronzeProductionLine();
             
             Console.WriteLine("Starting serial forge");
             productionLine.ForgeSerial();
