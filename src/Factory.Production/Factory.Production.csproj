@@ -10,6 +10,7 @@
       <ProjectReference Include="..\Factory.Alloying\Factory.Alloying.csproj" />
       <ProjectReference Include="..\Factory.Resources\Factory.Resources.csproj" />
       <ProjectReference Include="..\Factory.Samplers\Factory.Samplers.csproj" />
+      <ProjectReference Include="..\Factory.Smelter\Factory.Smelter.csproj" />
     </ItemGroup>
 
 </Project>
