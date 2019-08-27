@@ -5,6 +5,7 @@ using Factory.Resources;
 
 namespace Factory.Samplers
 {
+    public delegate bool CheckSample<TMetal>(IEnumerable<Ore<TMetal>> sample) where TMetal : IPureMetal;
     public class Sampler
     {
         private readonly double samplePercentage;
@@ -43,13 +44,14 @@ namespace Factory.Samplers
             }
         }
 
-        //TODO: Add expression to serve as check to this method
-        public bool RunCheckOnSample<TMetal>(IReadOnlyList<Ore<TMetal>> batch)
+        public bool RunCheckOnSample<TMetal>(
+            IReadOnlyList<Ore<TMetal>> batch,
+            Func<IEnumerable<Ore<TMetal>>, bool> checker)
             where TMetal : IPureMetal
         {
             var sample = GetSample(batch);
 
-            throw new NotImplementedException("Checking mechanism has not been implemented yet.");
+            return checker(sample);
         }
     }
 }

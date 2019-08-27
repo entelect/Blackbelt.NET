@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,7 +69,15 @@ namespace Factory.Production
 
                 var hematiteBatch = delivery.GetHematiteBatch(500);
 
-                var isGoodBatch = sampler.RunCheckOnSample(hematiteBatch);
+                Func<IEnumerable<Ore<Iron>>, bool> check = sample =>
+                {
+                    var mean = sample.Average(x => x.Concentration);
+
+                    return mean >= 30;
+                };
+                
+                var isGoodBatch = sampler.RunCheckOnSample(hematiteBatch,
+                    check);
 
                 if(!isGoodBatch)
                 {
