@@ -140,7 +140,24 @@ namespace Factory.Production
 
         public async Task ForgeParallelAsync()
         {
-            throw new NotImplementedException();
+            var stopWatch = Stopwatch.StartNew();
+            
+            var copper = FakeForge.ForgeIngotsAsync<Copper>(CopperIngotWeight, CopperIngotCount);
+            var zinc = FakeForge.ForgeIngotsAsync<Zinc>(ZincIngotWeight, ZincIngotCount);
+            var aluminium = FakeForge.ForgeIngotsAsync<Aluminium>(AluminiumIngotWeight, AluminiumIngotCount);
+
+            await Task.WhenAll(copper, zinc);
+
+            var bronze = bronzeAlloyer.ForgeAsync(await copper, await zinc);
+
+            await Task.WhenAll(bronze, aluminium);
+
+            var lightBronze = await lightBronzeAlloyer.ForgeAsync(await bronze, await aluminium);
+            
+            stopWatch.Stop();
+
+            Console.WriteLine($"Time taken: {stopWatch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"Light Bronze ingots forged: {lightBronze.Length}");
         }
     }
 }
